@@ -1,0 +1,90 @@
+
+<!--Navbar Fixed Start -->
+<div class="navbar-fixed hide-on-med-and-down" >
+
+<!--Topbar Start -->
+    <nav class="indigo darken-4 " role="navigation" style="height:25px;" id="nav1">
+        <div class="nav-wrapper container" style="line-height:25px; font-size:0.9em;">
+           <div style="float:left;">Lets code better!</div>
+            <div style="float:right;" class="hide-on-med-and-down">This is a very long text which should not appear on moblie site.</div>
+        </div>
+    </nav>
+<!--Topbar end -->
+
+<!--Navigation Start -->
+
+    <nav class="indigo darken-2" role="navigation" style="top:25px;" id="nav2">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="/" class="brand-logo">Codio</a>
+
+          <ul class="right ">
+            <li><a href="/" class="tooltipped" data-tooltip="Home"><i class="material-icons">home</i></a></li>
+         <li><a href="/submit-code" class="tooltipped" data-tooltip="Submit Code"><i class="material-icons">add</i></a></li><!--Submit Code -->
+         <li><a href="/view/list" class="tooltipped" data-tooltip="View Code"><i class="material-icons">code</i></a></li><!--View Code -->
+         {% if request.user.is_authenticated %}
+          <li><a class="dropdown-button tooltipped" href="#!" data-activates="loggedinuser" data-tooltip="You are Logged in">
+              {{request.user}}<i class="material-icons right">arrow_drop_down</i></a>
+          </li>
+        {% else %}
+          <li><a href="/admin/login/?next={{request.get_full_path}}" class="tooltipped" data-tooltip="Login to Codio">Login</a></li>
+        {% endif %}
+          </ul>
+        </div>
+    </nav>
+<!--Navigation End -->
+
+
+<!-- Logged In user Info start-->
+<ul id="loggedinuser" class="dropdown-content" style="min-width:200px; z-index:2;">
+  <li><a href="/user/profile/">Profile</a></li>
+  <li><a href="/user/submissions/">Submissions</a></li>
+  <li class="divider"></li>
+  <li><a href="/admin/logout/?next={{request.get_full_path}}">Logout</a></li>
+</ul>
+<!--Logged in User info end -->
+
+</div><!--Navbar Fixed End -->
+
+<!--Mobile Navigation Start -->
+<nav class="indigo darken-3 hide-on-large-only">
+    <div class="nav-wrapper ">
+          <a id="logo-container" href="#" class="brand-logo">Codio</a>
+          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+          <ul class="side-nav" id="mobile-demo" style="z-index:999;">
+            <li><a href="/"><i class="material-icons">home</i> Home</a></li>
+            <li><a href="/submit-code"><i class="material-icons">add</i> Submit Code</a></li>
+            <li><a href="/view/list/"><i class="material-icons">code</i> View Code</a></li>
+            <li class="divider"></li>
+            {% if request.user.is_authenticated %}
+            <li><a href="/user/profile/">Profile</a></li>
+            <li><a href="/user/submissions/">Submissions</a></li>
+            <li><a href="/admin/logout/?next={{request.get_full_path}}">Logout</a></li>
+            {% else %}
+            <li><a href="/admin/login/?next={{request.get_full_path}}">Login</a></li>
+            {% endif %}
+          </ul>
+    </div>
+</nav>
+<!--Mobile Navigation End -->
+
+
+<script type="text/javascript">
+if(window.jQuery){
+  $(window).scroll(function() {
+     if($(document).scrollTop() > 1) {
+         console.log("Not on top");
+         document.getElementById("nav1").style.display="none";
+         document.getElementById("nav2").style.top="-6px";
+         document.getElementById("nav2").style.height="58px";
+         //document.getElementById("floatbtn").style.top = "55px";
+     }
+     else {
+       document.getElementById("nav1").style.display="block";
+       document.getElementById("nav2").style.top="25px";
+       document.getElementById("nav2").style.height="64px";
+       //document.getElementById("floatbtn").style.top = "91px";
+     }
+  });
+
+}
+</script>

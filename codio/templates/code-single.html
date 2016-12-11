@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+  <html>
+  {% load static %}
+    <head>
+      <title>Codio</title>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="{% static "css/materialize.min.css" %}"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <!-- Highlighter-->
+      <link rel='stylesheet' href="{% static 'css/highlight/hybrid.css' %}">
+      <script src="{% static 'js/highlight.pack.js' %}"></script>
+      <script>hljs.initHighlightingOnLoad();</script>
+      <!-- Highlighter end-->
+	<script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    </head>
+
+<body>
+
+{% include 'nav.html' %}
+
+<!--Content starts from here -->
+<div style="height:100px; overflow:hidden;" class=""></div>
+<div class="container">
+    <div class="row">
+        {% if request.GET.back_link %}
+        <a href="{{request.GET.back_link}}" class="indigo waves-effect waves-light btn"><i class="material-icons large">keyboard_arrow_left</i></a><br><br>
+        {% endif %}
+<style>
+span.badge.new:after{content: ''!important; }span.badge{cursor: pointer;font-size:1.2em;padding:5px;}
+#usage,#code_text,#input_output{height:200px;}
+</style>
+
+{% if not code.developer.id == request.user.id %}
+  <style>.badge{display: none;}</style>
+{% endif %}
+
+    {%if code %}
+    <ul class="collection with-header z-depth-4">
+            <li class="collection-header">
+              <h4>{{ code.title }}
+                <span class="red darken-4 new badge" style="padding:0px;" onclick="removeform('{{code.id}}')"> &nbsp;&nbsp;Remove&nbsp;&nbsp; </span>
+                <span class="indigo new badge" style="padding:0px;" onclick="editform('title','{{code.title}}')">Edit</span>
+              </h4>
+            </li>
+            <li class="collection-item">
+              <b>Developer :</b><a href="/view/search/dev/{{ code.developer.id }}">
+              {% if code.developer.get_full_name %}
+                {{code.developer.get_full_name}}
+              {% else %}
+                {{code.developer}}
+              {% endif %}</a></li>
+              <textarea id="code" style="width:2px;height:2px; top:-100px; left:-100px; position:fixed;" >{{code.code_text}}</textarea>
+              <div id="inout" style="display:none;">{{code.input_output}}</div>
+              <div id="use" style="display:none;">{{code.usage}}</div>
+              <li class="collection-item"><b>Language :</b> <a href="/view/search/lang/{{ code.language }}">{{ code.language }}</a></li>
+              <li class="collection-item"><b>Date :</b> {{ code.add_date }} </li>
+              <li class="collection-item"><b>Usage :</b>
+                <span class="indigo new badge" onclick="editform('usage',$('#use').html())">Edit</span>
+                {{ code.usage | safe}}
+              </li>
+              <li class="collection-item"><b>Level :</b>
+                <span class="indigo new badge" style="padding:3px;" onclick="editform('level','0')">Edit</span>
+                {{ code.get_level_display }}
+              </li>
+              <li class="collection-item"><b>Code : </b>
+                <span id="copybtn" onclick="Materialize.toast('Code Copied!', 4000)" class="green new badge large" data-clipboard-target="#code">Copy</span>
+                <span class="indigo new badge"  onclick="editform('code_text',$('#code').html())">Edit</span>
+                <pre><code> {{ code.code_text }}</code></pre>
+              </li>
+              <li class="collection-item"><b>Input and Output :</b> <span class="indigo new badge" onclick="editform('input_output',$('#inout').html())">Edit</span> <pre>{{ code.input_output }}</pre></li>
+              <li class="collection-item"><b>Tags :</b><span class="indigo new badge" onclick="editform('tags','{{code.tags}}')">Edit</span>
+                {% if tags %}
+                {% for tag in tags %}
+                  <div class="chip"><a href="/view/search/tag/{{tag}}"> {{ tag }}</a></div>
+                  {% endfor %}
+                {% endif %}
+
+              </li>
+              <li class="collection-item">
+                <div class="fb-like" data-href="{{ request.build_absolute_uri}}" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+
+              </li>
+              <li class="collection-item">
+                <div class="fb-comments"></div>
+              </li>
+          </ul>
+
+    {% endif %}
+
+  </div><!--row end -->
+</div><!--container end -->
+
+
+
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <form method="post" action="/edit/code/{{code.id}}/" id="forms">
+    {% csrf_token %}
+
+  <div class="modal-content" id="model-content">
+
+  </div>
+  <div class="modal-footer">
+    <a class="btn-large waves-effect waves-light indigo modal-action modal-close" onclick="formsubmit();" href="#">Change</a>
+  </div>
+  </form>
+</div>
+
+<script type="text/javascript">
+    function editform(field,val){
+      $('#model-content').html("");
+      $('#model-content').append('<h4>Edit </h4><label>'+ field +' : </label>');
+
+      if (field=='title'){
+        $('#model-content').append('<input type="text" value="'+val+'" placeholder="Enter Value" id="'+ field +'" name="'+ field +'" >');
+      }
+      else if (field=='level') {
+        $('#model-content').append('<select name="'+ field +'" style="display:block;">\
+              <option value="0">Beginner</option>\
+              <option value="1">Intermediate</option>\
+              <option value="2">Advanced</option>\
+            </select>');
+      }
+      else { $('#model-content').append('<textarea id="'+ field +'" name="'+ field +'" >'+val+'</textarea>'); }
+
+      $('#modal1').modal('open');
+    }
+
+    function formsubmit(){
+      $.post( "/edit/code/{{code.id}}/", $( "#forms" ).serialize() );
+      window.location.reload(false);
+    }
+
+    function removeform(code_id){
+      var result = confirm("Are you sure you want to delete \"{{code.title}}\"?");
+      if (result) {
+          window.location.href = "/remove/code/" + code_id;
+      }
+
+    }
+
+
+
+
+</script>
+
+
+
+
+<div style="height:200px;"></div>
+
+
+<!--Content end here -->
+
+{% include 'float-button.html' %}
+
+{% include 'footer.html' %}
+
+<!--Do Not Change from here on -->
+      <!--Import jQuery before materialize.js-->
+
+      <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+      <script src="{% static 'js/clipboard.min.js' %}"></script>
+
+
+        <!--This should be after loading jquery only -->
+        <script>
+            $( document ).ready(function() {
+                $(".button-collapse").sideNav();
+                $('.tooltipped').tooltip({delay: 50});
+                $('.collapsible').collapsible();
+                $('.parallax').parallax();
+                $('.modal').modal();
+                $('select').material_select();
+
+
+                //var clipboard = new Clipboard('#copybtn');
+
+            });
+
+        </script>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+  </body>
+</html>

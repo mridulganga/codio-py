@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+  <html>
+  {% load static %}
+    <head>
+      <title>Codio</title>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="{% static "css/materialize.min.css" %}"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+      <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+<body>
+
+{% include 'nav.html' %}
+
+<!--Content starts from here -->
+<div style="height:100px; overflow:hidden;" class=""></div>
+<div class="container">
+    <div class="row">
+      <center><h3>Submit Code</h3></center>
+      {% if request.user.is_authenticated %}
+<div class="col s12 m10 l12 card z-depth-4" style="float:none; margin:0 auto; padding:40px;">
+
+      <form class="" action="/submit-code/" method="post">
+        {% csrf_token %}
+          {{ form }}<br><br>
+          <label for="language">Language: </label>
+          <select name="language" style="display:block;">
+            <option value="PYTHON" class="selected">Python</option>
+            <option value="JAVA">Java</option>
+            <option value="C">C</option>
+            <option value="CPP">C++</option>
+            <option value="ARDUINO">Arduino</option>
+            <option value="PHP">PHP</option>
+            <option value="Ruby">Ruby</option>
+            <option value="VISUAL-BASIC">Visual Basic</option>
+            <option value="C-SHARP">C#</option>
+            <option value="JAVASCRIPT">Javascript</option>
+            <option value="XML">XML</option>
+            <option value="HTML">HTML</option>
+            <option value="CSS">CSS</option>
+          </select>
+          <label for="level">Level: </label>
+              <select name="level" style="display:block;">
+                <option value="0" class="selected">Beginner</option>
+                <option value="1">Intermediate</option>
+                <option value="2">Advanced</option>
+              </select>
+              <br><br>
+          <input class="indigo waves-effect waves-light btn-large" type="submit" value="Submit Code">
+          <input class="indigo waves-effect waves-light btn-large" type="reset" value="Reset">
+      </form>
+
+</div>
+{% else %}
+<center><br><br><br><br>
+<a href="/admin/login/?next={{request.get_full_path}}" class="tooltipped waves-effect indigo btn-large waves-light" data-tooltip="Login to Codio">Login</a>
+</center>
+{% endif %}
+
+<style>
+#id_usage{height: 200px;}
+#id_code_text{height: 350px;}
+#id_input_output{height: 200px;}
+label{color: #333; line-height: 40px;}
+</style>
+
+  </div><!--row end -->
+</div><!--container end -->
+
+{% include 'float-button.html' %}
+
+<div style="height:200px;"></div>
+
+<!--Content end here -->
+
+{% include 'footer.html' %}
+
+<!--Do Not Change from here on -->
+      <!--Import jQuery before materialize.js-->
+
+      <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+
+
+        <!--This should be after loading jquery only -->
+        <script>
+            $( document ).ready(function() {
+                $(".button-collapse").sideNav();
+                $('.tooltipped').tooltip({delay: 50});
+                $('.collapsible').collapsible();
+                $('.parallax').parallax();
+            });
+        </script>
+  </body>
+</html>

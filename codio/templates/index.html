@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+  <html>
+  {% load static %}
+    <head>
+      <title>Codio</title>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="{% static "css/materialize.min.css" %}"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+      <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+<body>
+
+
+{% include 'nav.html' %}
+
+<!--Content starts from here -->
+<div style="height:100px; overflow:hidden;" class=""></div>
+<div class="container">
+    <div class="row">
+        <h2>What is Codio?</h2>
+        <div class="flow-text">Codio is an online coding platform which allows developers to share their awesome code with other developers.
+            We help people write better, more optimised code faster.
+        </div>
+
+        <br>
+        <h4>Who made this?</h4>
+        <div class="flow-text">This online service has been created by college students. This was a hobby project, we want to help developers
+            find good code faster.
+        </div>
+
+        <br>
+        <h4>How do I get started?</h4>
+        <div class="flow-text">You can follow the following steps to start quickly :
+            <ol>
+                <li>Create a new Account.</li>
+                <li>Go to the <a href="#">Submit Code</a> page.</li>
+                <li>Fill all the required fields for Title, Language, code etc.</li>
+                <li>Submit the code and share the link with your friends.</li>
+            </ol>
+            You can also go to the view code page to view code submitted by other developers, you can search,filter and sort the code easily.
+        </div>
+        <br><br><br>
+
+
+    </div><!--Row End -->
+
+</div><!--Container End -->
+
+<div class="parallax-container ">
+
+            <div class="parallax"><img src="{% static 'img/codeback.png' %}">
+                <div class="valign-wrapper" style="height:100%">
+                    <div class="card valign" style="float:none; margin:0 auto; opacity:0.9;" >
+                                <div class="card-content">
+                                  <p>So Ready to get started Submit your code or View code submitted by others!</p>
+                                </div>
+                                <div class="card-action"><center>
+                                        <a class="blue waves-effect waves-light btn btn-large" style="opacity:1;" href="#">Submit Code</a>
+                                        <a class="blue waves-effect waves-light btn btn-large" style="opacity:1;" href="#">View Code</a>
+                                        </center>
+                                </div>
+                    </div>
+                </div><!--valign-wrapper-->
+            </div>
+</div><!--Parallax end-->
+
+
+<div style="height:200px;"></div>
+
+
+
+
+<!--Content end here -->
+
+{% include 'footer.html' %}
+
+<!--Do Not Change from here on -->
+      <!--Import jQuery before materialize.js-->
+
+      <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+
+
+        <!--This should be after loading jquery only -->
+        <script>
+            $( document ).ready(function() {
+                $(".button-collapse").sideNav();
+                $('.tooltipped').tooltip({delay: 50});
+                $('.collapsible').collapsible();
+                $('.parallax').parallax();
+            });
+        </script>
+
+</body>
+</html>

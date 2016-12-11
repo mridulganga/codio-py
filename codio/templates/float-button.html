@@ -1,0 +1,18 @@
+<div class="fixed-action-btn toolbar" style=" right:12%;" id="floatbtn">
+  <a class="btn-floating btn-large indigo " >
+    <i class="large material-icons" onclick="$('#q').select();">search</i>
+  </a>
+  <ul>
+    <li class="waves-effect waves-light row">
+    <form method="post" action="/view/search/">{% csrf_token %}
+      <div class="input-field col s6" style="float:none; margin:10px auto;">
+          <input type="text" class="validate" id="q" name="q" placeholder="Search">
+          <style>::-webkit-input-placeholder { /* Chrome */
+            color: white;
+          }</style>
+        </div>
+    </form>
+    </li>
+
+  </ul>
+</div>
